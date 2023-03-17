@@ -5,36 +5,24 @@ import csv
 from datetime import datetime
 
 
-nummer = 13
-
-url = "https://portal.aidoo-online.de/workload"
-parameter = {
-    "mandant": "201900141_fitnesswerk_hassloch",
-    "stud_nr": nummer,
-    "jsonResponse": 1}
-
 values_remove = ['gym', 'name', 'workload']
 
 
-def getdata():
-    response = requests.Session().get(url, params=parameter)
-    data = response.json()
-    data['time'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    workload = data['numval']
-    time = data['time']
-    return time, workload
+def get_data(nummer):
+    """Datenabfrage der Auslastung des jeweiligen Gyms"""
+
+    url = "https://portal.aidoo-online.de/workload"
+    parameter = {
+        "mandant": "201900141_fitnesswerk_hassloch",
+        "stud_nr": nummer,
+        "jsonResponse": 1}
+    response = requests.Session().get(url, params=parameter).json()
+    return response
 
 
-def get_data():
-    response = requests.Session().get(url, params=parameter)
-    data = response.json()
-    for key in values_remove:
-        data.pop(key)
-    data['time'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    return data['numval']
-
-
-print(getdata())
+for i in range(100, 200):
+    print(i)
+    print(get_data(i))
 
 
 # with open('bellavitalis.txt', 'r') as text:
